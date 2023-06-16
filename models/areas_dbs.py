@@ -1,5 +1,5 @@
 class Areas:
-    columns = {
+    __columns = {
         'name': None,
         'description': None,
         'levels': None,
@@ -9,7 +9,23 @@ class Areas:
     def __init__(self) -> None:
         self.__table = Areas.__name__
 
-    def created_area(self, colums_values: list):
-        colums_values = zip(self.columns.keys(), colums_values)
-        self.columns.update(colums_values)
+    def created_area(self, columns_values: list):
+        columns_values = zip(self.__columns.keys(), columns_values)
+        print(columns_values)
+        columns = self.__columns.copy()
+        columns.update(columns_values)
+        return columns
     
+    #def list_areas(self, data: dict):
+
+    
+
+
+areas = Areas()
+creacion = areas.created_area(
+    [
+        'construcción', 'dwnqiudbniubdw', 'técnico', 'fibqugfeu'
+    ]
+)
+
+print(creacion) 

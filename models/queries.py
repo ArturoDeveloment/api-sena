@@ -1,4 +1,5 @@
-from conexion import Conexion
+from models.conexion import Conexion
+import json
 
 class RequestDataBase:
     conexion = Conexion()
@@ -17,21 +18,27 @@ class RequestDataBase:
         query_execute = f"UPDATE {table} SET {columns_into} WHERE {where_column}=?", tuple(columns_values)
         self.conexion.execute_commit(query_execute)
 
-    def show_registers(self, table: str = None, query: list = None, columns_of_where: dict = {'id': None}):
-        query = ",".join([i for i in query])
+    #def show_registers(self, table: str = None, query: list = None, columns_of_where: dict = {'id': None}):
+
+    def show_registers(self, table: str = None, query_list: list = None, columns_of_where: dict = None):
+        query:str = ",".join(query_list)
         # varibales for where 
         column_where_title = list(columns_of_where.copy().keys())[0]
         column_where_value = columns_of_where.copy().get(column_where_title)
         query_execute = f"SELECT {query} FROM {table} WHERE {column_where_title}=?", tuple([column_where_value])
-        query = self.conexion.execute_commit(query_execute)
-        data = [i for i in query]
+        query_commit = self.conexion.execute_commit(query_execute)
+        data = [i for i in query_commit]
         return data
+        return [{
+            'columns': query.split(','),
+            'pyload': data
+        }]
 
 
-rq = RequestDataBase()
+"""rq = RequestDataBase()
 execute = rq.query_insert('prueba', ['name', 'description'], ['carlos', 'prueba2'])
 print(execute)
 execute = rq.query_update('prueba', {'id': 2}, ['name'], ['ortiz'])
 print(execute)
 execute = rq.show_registers('prueba', ['name'], {'name': 'carlos'})
-print(execute)
+print(execute)"""
